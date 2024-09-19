@@ -1,19 +1,24 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+
 import styled from "styled-components"
 import HomePage from "./pages/HomePage/HomePage"
 import SeatsPage from "./pages/SeatsPage/SeatsPage"
 import SessionsPage from "./pages/SessionsPage/SessionsPage"
 import SuccessPage from "./pages/SuccessPage/SuccessPage"
 
-export default function App() {
-    return (
-        <>
-           <NavContainer>CINEFLEX</NavContainer>
 
-            {/* <HomePage /> */}
-            {/* <SeatsPage /> */}
-            <SessionsPage />
-            {/* <SuccessPage /> */}
-        </>
+export default function App() {
+    
+    return (
+        <BrowserRouter>
+            <NavContainer>CINEFLEX</NavContainer>
+            <Routes>
+                <Route path="/" element={<HomePage />}/>
+                <Route path="/seats" element={<SeatsPage />}/>
+                <Route path="/sessions" element={<SessionsPage />}/>
+                <Route path="/success" element={<SuccessPage />}/>
+            </Routes>
+        </BrowserRouter>
     )
 }
 
@@ -23,6 +28,7 @@ const NavContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1;
     background-color: #C3CFD9;
     color: #E8833A;
     font-family: 'Roboto', sans-serif;
