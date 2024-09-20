@@ -1,6 +1,16 @@
 import styled from "styled-components"
 
-export default function SessionsPage() {
+export default function SessionsPage({ filme }) {
+
+    useEffect(() => {
+        const requisicao = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/movies/ID_DO_FILME/showtimes`);
+        requisicao.then(res => {
+            setFilmes(res.data);
+        });
+        requisicao.catch(err => {
+            console.log(err.response.data);
+        });
+    }, []);
 
     return (
         <PageContainer>

@@ -2,6 +2,7 @@ import styled from "styled-components"
 import axios from "axios"
 import { useState, useEffect } from "react";
 import Filme from "./Filme"
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 export default function HomePage() {
 
@@ -19,7 +20,7 @@ export default function HomePage() {
 
     return (
         <PageContainer>
-            <p>Selecione o filme</p>
+            <p>Em Cartaz</p>
             <ListContainer>
                 <MovieContainer>
                     {filmes.map((filme) => <Filme key={filme.id} filme={filme} />)}
@@ -30,16 +31,21 @@ export default function HomePage() {
 }
 
 const PageContainer = styled.div`
+    height: 310vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     z-index: -1;
-    font-family: 'Roboto';
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 24px;
     text-align: center;
     color: #293845;
+    background-color: #212226;
     margin-top: 30px;
     padding-top: 70px;
+    p {
+        color: white;
+    }
 `
 const ListContainer = styled.div`
     width: 330px;
@@ -55,10 +61,11 @@ const MovieContainer = styled.div`
     border-radius: 3px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 50px;
+    gap: 30px;
     margin: 10px;
     img {
         width: 150px;
         height: 225px;
+        border-radius: 10px;
     }
 `

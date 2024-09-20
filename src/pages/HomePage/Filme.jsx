@@ -1,15 +1,9 @@
-import styled from "styled-components"
+import { Link } from "react-router-dom";
 
 export default function Filme({ filme }) {
     return (
         <div>
-            <img src={filme.posterURL} alt={filme.title} />
-            <TituloFilme>{filme.title}</TituloFilme>
+            <Link to={`/sessions/${filme.id}`}><img src={filme.posterURL} alt={filme.title} /></Link>
         </div>
     )
 }
-
-const TituloFilme = styled.div`
-    font-size: 15px;
-    font-weight: bold;
-`

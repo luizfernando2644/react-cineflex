@@ -1,24 +1,27 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Route, Routes, useParams } from "react-router-dom"
 
 import styled from "styled-components"
 import HomePage from "./pages/HomePage/HomePage"
 import SeatsPage from "./pages/SeatsPage/SeatsPage"
 import SessionsPage from "./pages/SessionsPage/SessionsPage"
 import SuccessPage from "./pages/SuccessPage/SuccessPage"
+import MovieIcon from "./assets/movie-icon.png"
 
 
 export default function App() {
-    
+
     return (
-        <BrowserRouter>
-            <NavContainer>CINEFLEX</NavContainer>
-            <Routes>
-                <Route path="/" element={<HomePage />}/>
-                <Route path="/seats" element={<SeatsPage />}/>
-                <Route path="/sessions" element={<SessionsPage />}/>
-                <Route path="/success" element={<SuccessPage />}/>
-            </Routes>
-        </BrowserRouter>
+        <>
+            <NavContainer> <img src={MovieIcon} alt="" /> Cineflex</NavContainer>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/sessions/:idFilme" element={<SessionsPage />}/>
+                    <Route path="/seats/:idFilme" element={<SeatsPage />}/>
+                    <Route path="/success/:idFilme" element={<SuccessPage />}/>
+                </Routes>
+            </BrowserRouter>
+        </>
     )
 }
 
@@ -29,14 +32,13 @@ const NavContainer = styled.div`
     align-items: center;
     justify-content: center;
     z-index: 1;
-    background-color: #C3CFD9;
-    color: #E8833A;
+    background-color: #EE987F;
+    color: #FADBC5;
     font-family: 'Roboto', sans-serif;
-    font-size: 34px;
+    font-size: 45px;
     position: fixed;
     top: 0;
-    a {
-        text-decoration: none;
-        color: #E8833A;
+    img {
+        margin-right: 40px;
     }
 `
