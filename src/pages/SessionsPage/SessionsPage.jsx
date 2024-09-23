@@ -1,128 +1,97 @@
-import styled from "styled-components"
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-export default function SessionsPage({ filme }) {
+export default function SessionsPage() {
+    const { idFilme } = useParams();
+    const [sessions, setSessions] = useState(null);
+    const url = `https://mock-api.driven.com.br/api/v8/cineflex/movies/${idFilme}/showtimes`;
 
     useEffect(() => {
-        const requisicao = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/movies/ID_DO_FILME/showtimes`);
-        requisicao.then(res => {
-            setFilmes(res.data);
-        });
-        requisicao.catch(err => {
-            console.log(err.response.data);
-        });
-    }, []);
+        const fetchSessions = async () => {
+            try {
+                const response = await axios.get(url);
+                setSessions(response.data);
+            } catch (err) {
+                console.error(err.response ? err.response.data : err.message);
+            }
+        };
+
+        fetchSessions();
+    }, [url]);
+
+    if (!sessions) return <div>Carregando...</div>
 
     return (
         <PageContainer>
-            Selecione o horário
-            <div>
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
-
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
-
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
-            </div>
-
-            <FooterContainer>
-                <div>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster" />
-                </div>
-                <div>
-                    <p>Tudo em todo lugar ao mesmo tempo</p>
-                </div>
-            </FooterContainer>
-
+            <Titulo>Selecione o Horário</Titulo>
+            {sessions.days.map(day => (
+                <>
+                    <ContainerInformacoes>
+                        <DataHorario>{day.weekday}, {day.date}</DataHorario>
+                        <Linha />
+                        <ContainerHorarios>
+                            {day.showtimes.map(showtime => (
+                                <Link to={`/seats/${idFilme}`}>
+                                    <BotaoHorario key={showtime.id}>
+                                        {showtime.name}
+                                    </BotaoHorario>
+                                </Link>
+                            ))}
+                        </ContainerHorarios>
+                    </ContainerInformacoes>
+                </>
+            ))}
         </PageContainer>
-    )
+    );
 }
 
 const PageContainer = styled.div`
+    height: 130vh;
+    padding: 20px;
+    background-color: #212226;
+    color: white;
+    gap: 5px;
+`
+
+const ContainerInformacoes = styled.div`
+    margin: 10px 0;
+    padding: 10px;
     display: flex;
+    justify-content: space-around;
     flex-direction: column;
-    font-family: 'Roboto';
-    font-size: 24px;
-    text-align: center;
-    color: #293845;
-    margin-top: 30px;
-    padding-bottom: 120px;
-    padding-top: 70px;
-    div {
-        margin-top: 20px;
-    }
-`
-const SessionContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-family: 'Roboto';
-    font-size: 20px;
-    color: #293845;
-    padding: 0 20px;
-`
-const ButtonsContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    margin: 20px 0;
-    button {
-        margin-right: 20px;
-    }
-    a {
-        text-decoration: none;
-    }
-`
-const FooterContainer = styled.div`
-    width: 100%;
-    height: 120px;
-    background-color: #C3CFD9;
-    display: flex;
-    flex-direction: row;
     align-items: center;
-    font-size: 20px;
-    position: fixed;
-    bottom: 0;
+    background-color: #2B2D36;
+`
 
-    div:nth-child(1) {
-        box-shadow: 0px 2px 4px 2px #0000001A;
-        border-radius: 3px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: white;
-        margin: 12px;
-        img {
-            width: 50px;
-            height: 70px;
-            padding: 8px;
-        }
-    }
+const ContainerHorarios = styled.div`
+    display: flex;
+    justify-content: space-around;  
+    width: 100%;
+`
 
-    div:nth-child(2) {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        p {
-            text-align: left;
-            &:nth-child(2) {
-                margin-top: 10px;
-            }
-        }
-    }
+const BotaoHorario = styled.button`
+    border: 3px solid #EE987F;
+    background: none;
+    color: #EE987F;
+    font-weight: lighter;
+`
+
+const Titulo = styled.div`
+    text-align: center;
+    margin-top: 70px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 19px;
+`
+
+const DataHorario = styled.div`
+    margin-top: 20px;
+    margin-bottom: 5px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+`
+
+const Linha = styled.hr`
+    width: 80%;
 `

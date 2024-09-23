@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, useParams } from "react-router-dom"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
 
 import styled from "styled-components"
 import HomePage from "./pages/HomePage/HomePage"
@@ -16,9 +16,9 @@ export default function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<HomePage />} />
-                    <Route path="/sessions/:idFilme" element={<SessionsPage />}/>
-                    <Route path="/seats/:idFilme" element={<SeatsPage />}/>
-                    <Route path="/success/:idFilme" element={<SuccessPage />}/>
+                    <Route path="/sessions/:idFilme" element={<SessionsPage /> }/>
+                    <Route path="/seats/:idFilme" element={<SeatsPage />} />
+                    <Route path="/success/:idFilme" element={<SuccessPage />} />
                 </Routes>
             </BrowserRouter>
         </>

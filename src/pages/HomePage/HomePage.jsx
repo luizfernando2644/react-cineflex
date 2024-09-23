@@ -1,11 +1,11 @@
 import styled from "styled-components"
-import axios from "axios"
-import { useState, useEffect } from "react";
 import Filme from "./Filme"
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
 
 export default function HomePage() {
-
+    
     const [filmes, setFilmes] = useState([]);
 
     useEffect(() => {
