@@ -31,12 +31,10 @@ const NavContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1;
     background-color: #EE987F;
     color: #FADBC5;
     font-family: 'Roboto', sans-serif;
     font-size: 45px;
-    position: fixed;
     top: 0;
     img {
         margin-right: 40px;
