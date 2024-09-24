@@ -16,4 +16,5 @@ const ImagemFilme = styled.img`
     width: 150px;
     height: 200px;
     border-radius: 10px;
+    cursor: pointer;
 `
