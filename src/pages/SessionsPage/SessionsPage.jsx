@@ -7,9 +7,9 @@ import MovieIcon from "../../assets/movie-icon.png"
 
 export default function SessionsPage() {
     const { idFilme } = useParams();
+    const [sessoes, setSessoes] = useState([]);
     const url = `https://mock-api.driven.com.br/api/v8/cineflex/movies/${idFilme}/showtimes`;
     const requisicao = axios.get(url);
-    const [sessoes, setSessoes] = useState([]);
 
     useEffect(() => {
         requisicao.then(res => {
