@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import styled from "styled-components"
-import Calendar from "../../assets/calendar-icon.png"
+import styled from "styled-components";
+import Calendar from "../../assets/calendar-icon.png";
 
 export default function Session({ sessoes, day }) {
     return (

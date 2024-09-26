@@ -37,6 +37,8 @@ const NavContainer = styled.div`
     font-size: 45px;
     top: 0;
     img {
-        margin-right: 40px;
+        width: 50px;
+        margin-right: 10px;
+        margin-bottom: 10px;
     }
 `

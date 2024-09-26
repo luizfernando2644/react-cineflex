@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import Session from "./Session";
-import MovieIcon from "../../assets/movie-icon.png"
+import MovieIcon from "../../assets/movie-icon.png";
 
 export default function SessionsPage() {
     const { idFilme } = useParams();
@@ -36,8 +36,8 @@ export default function SessionsPage() {
 
             <SelectedMovie>
                 <Movie>
-                    <SiteIcon src={MovieIcon} alt="" />
-                    <MovieTitle>{sessoes.title}</MovieTitle>
+                    <img src={MovieIcon} alt="" />
+                    <h1>{sessoes.title}</h1>
                 </Movie>
                 <MoviePoster src={sessoes.posterURL} alt="" />
             </SelectedMovie>
@@ -71,18 +71,16 @@ const SelectedMovie = styled.div`
 const Movie = styled.div`
     display: flex;
     align-items: center;
-`
+    img {
+        height: 40px;
+    }
 
-const SiteIcon = styled.img`
-    height: 40px;
-    margin-right: 8px;
-`
-
-const MovieTitle = styled.h1`
-    font-size: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-weight: bolder;
-    color: #212226;
+    h1 {
+        font-size: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bolder;
+        color: #212226;
+    }
 `
 
 const MoviePoster = styled.img`
