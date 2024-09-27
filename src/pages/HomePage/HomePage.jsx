@@ -1,71 +1,59 @@
-import styled from "styled-components"
-import Filme from "./Filme"
-import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import styled from "styled-components";
+import Filme from "./Filme"
 
 export default function HomePage() {
-    
+    const url = "https://mock-api.driven.com.br/api/v8/cineflex/movies";
+    const requisicao = axios.get(url);
     const [filmes, setFilmes] = useState([]);
 
     useEffect(() => {
-        const requisicao = axios.get("https://mock-api.driven.com.br/api/v8/cineflex/movies");
         requisicao.then(res => {
             setFilmes(res.data);
         });
+
         requisicao.catch(err => {
-            console.log(err.response.data);
-        });
+            console.log(err.res.data);
+        })
     }, []);
+
+    if (filmes.length === 0) return <div>Carregando...</div>
 
     return (
         <PageContainer>
-            <p>Em Cartaz</p>
-            <ListContainer>
-                <MovieContainer>
-                    {filmes.map((filme) => <Filme key={filme.id} filme={filme} />)}
-                </MovieContainer>
-            </ListContainer>
+            <TituloFilme><h1>Em Cartaz</h1></TituloFilme>
+            <MoviesContainer>
+                {filmes.map((filme) => <Filme key={filme.id} filme={filme}/>)}
+            </MoviesContainer>
         </PageContainer>
     )
 }
 
 const PageContainer = styled.div`
-    height: 310vh;
+    width: 100vw;
     display: flex;
     flex-direction: column;
     align-items: center;
-    z-index: -1;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 24px;
-    text-align: center;
-    color: #293845;
+    justify-content: center;
     background-color: #212226;
-    margin-top: 30px;
-    padding-top: 70px;
-    p {
+`
+
+const TituloFilme = styled.div`
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    h1 {
         color: white;
+        font-family: 'Roboto', sans-serif;
+        font-size: 25px;
     }
 `
-const ListContainer = styled.div`
-    width: 330px;
+
+const MoviesContainer = styled.div`
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
-    flex-direction: row;
-    padding: 10px;
-`
-const MovieContainer = styled.div`
-    width: 145px;
-    height: 210px;
-    box-shadow: 0px 2px 4px 2px #0000001A;
-    border-radius: 3px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
-    margin: 10px;
-    img {
-        width: 150px;
-        height: 225px;
-        border-radius: 10px;
-    }
+    justify-content: center;
 `

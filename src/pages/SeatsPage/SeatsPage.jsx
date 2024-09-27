@@ -1,165 +1,195 @@
-import styled from "styled-components"
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import Seat from "./Seat";
+import styled from "styled-components";
+import MovieIcon from "../../assets/movie-icon.png";
+import Calendar from "../../assets/calendar-icon.png";
+import UserIcon from "../../assets/user-icon.png"
 
 export default function SeatsPage() {
+    const { idFilme } = useParams();
+    const [session, setSession] = useState([]);
+    const url = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idFilme}/seats`;
+
+    useEffect(() => {
+        axios.get(url)
+            .then(res => {
+                setSession(res.data);
+            })
+            .catch(err => {
+                console.log(err.response.data);
+            });
+    }, []);
+
+    if (session.length === 0) return <div>Carregando...</div>;
+
+    console.log(session.movie);
 
     return (
         <PageContainer>
-            Selecione o(s) assento(s)
-
-            <SeatsContainer>
-                <SeatItem>01</SeatItem>
-                <SeatItem>02</SeatItem>
-                <SeatItem>03</SeatItem>
-                <SeatItem>04</SeatItem>
-                <SeatItem>05</SeatItem>
-            </SeatsContainer>
-
-            <CaptionContainer>
-                <CaptionItem>
-                    <CaptionCircle />
-                    Selecionado
-                </CaptionItem>
-                <CaptionItem>
-                    <CaptionCircle />
-                    Disponível
-                </CaptionItem>
-                <CaptionItem>
-                    <CaptionCircle />
-                    Indisponível
-                </CaptionItem>
-            </CaptionContainer>
-
-            <FormContainer>
-                Nome do Comprador:
-                <input placeholder="Digite seu nome..." />
-
-                CPF do Comprador:
-                <input placeholder="Digite seu CPF..." />
-
-                <button>Reservar Assento(s)</button>
-            </FormContainer>
-
-            <FooterContainer>
-                <div>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster" />
-                </div>
-                <div>
-                    <p>Tudo em todo lugar ao mesmo tempo</p>
-                    <p>Sexta - 14h00</p>
-                </div>
-            </FooterContainer>
-
+            <h1>Selecione o(s) assento(s)</h1>
+            <ContainerButtons>
+                {session.seats.map(seat => (
+                    <Seat key={seat.id} name={seat.name} isAvailable={seat.isAvailable} />
+                ))}
+            </ContainerButtons>
+            <hr />
+            <SeatsInfo>
+                <Selected>
+                    <div>ㅤ</div>
+                    <p>Disponível</p>
+                </Selected>
+                <Disponible>
+                    <div>ㅤ</div>
+                    <p>Selecionado</p>
+                </Disponible>
+                <Indisponible>
+                    <img src={UserIcon} alt="" />
+                    <p>Indisponível</p>
+                </Indisponible>
+            </SeatsInfo>
+            <SelectedMovie>
+                <MovieContainer>
+                    <Movie>
+                        <img src={MovieIcon} alt="" />
+                        <h1>{session.movie.title}</h1>
+                    </Movie>
+                    <MovieInfo>
+                        <img src={Calendar} alt="" />
+                        <p>{session.day.date} às {session.name}</p>
+                    </MovieInfo>
+                </MovieContainer>
+                <img src={session.movie.posterURL} alt="" />
+            </SelectedMovie>
+            <img src="" alt="" />
         </PageContainer>
-    )
+    );
 }
 
 const PageContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: 'Roboto';
-    font-size: 24px;
-    text-align: center;
-    color: #293845;
-    margin-top: 30px;
-    padding-bottom: 120px;
-    padding-top: 70px;
-`
-const SeatsContainer = styled.div`
-    width: 330px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-`
-const FormContainer = styled.div`
-    width: calc(100vw - 40px); 
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin: 20px 0;
-    font-size: 18px;
-    button {
-        align-self: center;
-    }
-    input {
-        width: calc(100vw - 60px);
+    height: 100vh;
+    padding: 10px;
+    background-color: #212226;
+    h1 {
+        font-size: 30px;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        text-align: center;
+        color: white;
     }
 `
-const CaptionContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    width: 300px;
-    justify-content: space-between;
-    margin: 20px;
-`
-const CaptionCircle = styled.div`
-    border: 1px solid blue;         // Essa cor deve mudar
-    background-color: lightblue;    // Essa cor deve mudar
-    height: 25px;
-    width: 25px;
-    border-radius: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 5px 3px;
-`
-const CaptionItem = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 12px;
-`
-const SeatItem = styled.div`
-    border: 1px solid blue;         // Essa cor deve mudar
-    background-color: lightblue;    // Essa cor deve mudar
-    height: 25px;
-    width: 25px;
-    border-radius: 25px;
-    font-family: 'Roboto';
-    font-size: 11px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 5px 3px;
-`
-const FooterContainer = styled.div`
+
+const ContainerButtons = styled.div`
     width: 100%;
-    height: 120px;
-    background-color: #C3CFD9;
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-gap: 5px;
+    justify-items: center;
+`
+
+const SeatsInfo = styled.div`
     display: flex;
-    flex-direction: row;
+    justify-content: space-around;
     align-items: center;
-    font-size: 20px;
-    position: fixed;
-    bottom: 0;
+    margin-bottom: 30px;
+    margin-top: 30px;
+`
 
-    div:nth-child(1) {
-        box-shadow: 0px 2px 4px 2px #0000001A;
-        border-radius: 3px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: white;
-        margin: 12px;
-        img {
-            width: 50px;
-            height: 70px;
-            padding: 8px;
-        }
+const Selected = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    div {
+        width: 30px;
+        height: 30px;
+        margin-bottom: 5px;
+        border-radius: 20px;
+        background-color: #EE897F;
     }
+    p {
+        color: #7f8f9e;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+`
 
-    div:nth-child(2) {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        p {
-            text-align: left;
-            &:nth-child(2) {
-                margin-top: 10px;
-            }
-        }
+const Disponible = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    div {
+        width: 30px;
+        height: 30px;
+        margin-bottom: 5px;
+        border-radius: 20px;
+        background-color: #9DB899;
     }
+    p {
+        color: #7f8f9e;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+`
+
+const Indisponible = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    img {
+        margin-bottom: 5px;
+        height: 30px;
+    }
+    p {
+        color: #7f8f9e;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+`
+
+const SelectedMovie = styled.div`
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #EE987F;
+    img {
+        height: 150px;
+        border-radius: 8px;
+    }
+`
+
+const MovieContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+
+const Movie = styled.div`
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    h1 {
+        color: #212226;
+        font-size: 19px;
+        font-weight: bold;
+    }
+    img {
+        height: 40px;
+        margin-right: 5px;
+    }
+`
+
+const MovieInfo = styled.div`
+    display: flex;
+    align-items: center;
+    p {
+        color: #212226;
+        font-size: 19px;
+        font-weight: bold;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+    img {
+        height: 40px;
+        margin-right: 5px;
+    }    
 `
